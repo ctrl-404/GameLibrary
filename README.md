@@ -24,7 +24,7 @@ Maven Version: Apache Maven 3.9.9 <br>
 Note: <br>
    If your are seeing errors regarding missing database classes you need to run the jooq first before compiling again. <br>
    1. Run: <br>
->   mvn jooq-codegen:generate <br>
+>   mvn generate-sources <br>
    2. Re-compile: <br>
 >   mvn clean compile <br>
    3. Re-run the application: <br>
