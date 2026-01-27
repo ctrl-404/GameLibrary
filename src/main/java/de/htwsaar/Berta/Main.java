@@ -7,7 +7,7 @@ import static com.raylib.Raylib.*;
 
 /*
  * Simple Main-Methode als Überblick für eine JDBC Datenbanken implemenation
- * mit Jaylib GUI.
+ * mit Jaylib GUI. Innerhalb einer Main-Methode der Einfacheits wegen.
  *
  * Jaylib: Schnittstelle zwischen Java und C basierten Raylib.
  */
