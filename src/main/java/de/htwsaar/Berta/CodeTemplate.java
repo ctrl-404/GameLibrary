@@ -12,7 +12,7 @@ import static com.raylib.Raylib.*;
  * Jaylib: Schnittstelle zwischen Java und C basierten Raylib.
  */
 
-public class Main {
+public class CodeTemplate {
   // Stellt eine Game-Entity aus der Datenbank da.
   record Game(String name, String publisher) {}
   
