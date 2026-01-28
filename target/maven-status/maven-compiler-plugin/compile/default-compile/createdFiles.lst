@@ -1,9 +1,9 @@
 SteamAPI.class
-de/htwsaar/Berta/CodeTemplate$Game.class
+de/htwsaar/Berta/presentation/CodeTemplate.class
 de/htwsaar/Berta/db/tables/Games.class
 de/htwsaar/Berta/db/Tables.class
-de/htwsaar/Berta/CodeTemplate.class
 de/htwsaar/Berta/db/tables/records/GamesRecord.class
+de/htwsaar/Berta/presentation/CodeTemplate$Game.class
 de/htwsaar/Berta/db/DefaultCatalog.class
 database.class
 de/htwsaar/Berta/db/DefaultSchema.class

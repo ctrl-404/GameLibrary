@@ -112,7 +112,7 @@
       <artifactId>exec-maven-plugin</artifactId>
       <version>3.1.0</version>
       <configuration>
-        <mainClass>de.htwsaar.Berta.CodeTemplate</mainClass>
+        <mainClass>de.htwsaar.Berta.presentation.CodeTemplate</mainClass>
         <commandlineArgs>-XstartOnFirstThread</commandlineArgs>
       </configuration>
     </plugin>

@@ -1,4 +1,4 @@
-package de.htwsaar.Berta;
+package de.htwsaar.Berta.presentation;
 
 import java.util.*;
 import java.sql.*;
