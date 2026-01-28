@@ -70,7 +70,7 @@ public class Main {
       DrawText("DATABASE RECORDS:", textPadding, textPadding, textPadding, myWhite);
       DrawLine(textPadding, (2*textPadding), 300, (2*textPadding), myGray);
 
-      // Zeichnet alle Game-Listelemente
+      // Zeichnet alle Game-Listelemente ins Fenster
       for (int i=0; i<gameList.size(); i++) {
         Game game=gameList.get(i);
         String displayString=String.format("%s - (%s)", game.name(), game.publisher());
