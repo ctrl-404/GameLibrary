@@ -27,7 +27,7 @@ public class CodeTemplate {
 
   // GUI-Textpadding für einhaltliche Darstellung
   public static final int textPadding=20;
-  
+
   public static void main(String[] args) {
     List<Game> gameList=new ArrayList<>();
 
