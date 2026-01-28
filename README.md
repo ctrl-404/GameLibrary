@@ -29,4 +29,3 @@ Note: <br>
 >   mvn clean compile <br>
    3. Re-run the application: <br>
 >   mvn exec:java -Dexec.mainClass="de.htwsaar.Berta.Main"
-
