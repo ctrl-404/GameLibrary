@@ -1,4 +1,4 @@
-package de.htwsaar.Berta;
+package de.htwsaar.Berta.presentation;
 
 import java.util.*;
 import java.sql.*;
@@ -12,7 +12,7 @@ import static com.raylib.Raylib.*;
  * Jaylib: Schnittstelle zwischen Java und C basierten Raylib.
  */
 
-public class Main {
+public class CodeTemplate {
   // Stellt eine Game-Entity aus der Datenbank da.
   record Game(String name, String publisher) {}
   
@@ -27,25 +27,12 @@ public class Main {
 
   // GUI-Textpadding für einhaltliche Darstellung
   public static final int textPadding=20;
-  
-  public static void main(String[] args) {
+
+  public static void draw() {
     List<Game> gameList=new ArrayList<>();
 
     // Stellt Verbindung zur Datenbank her.
     try (var conn=DriverManager.getConnection(url)) {
-
-      // Batched Testdaten in die Datenbank. Wird später durch Daten von Steam API ersetzt. 
-      String insertSql="INSERT INTO games(gameName,publisherName) VALUES(?,?)";
-      var gameNames=new String[]{"The Last Of Us", "GTA V", "COD Blackops-III", "Fortnite", "Roblox"};
-      var publisherNames=new String[]{"Sony", "Rockstar", "EA", "Epic", "Roblox Corp."};
-      try (var pstmt=conn.prepareStatement(insertSql)) {
-        for (int i=0; i<gameNames.length; i++) {
-          pstmt.setString(1, gameNames[i]);
-          pstmt.setString(2, publisherNames[i]);
-          pstmt.addBatch();
-        }
-        pstmt.executeBatch();
-      }
       
       // Einlesen der Datenbankdaten und Einfügen derer in die Game-Liste
       String selectSql="SELECT gameName, publisherName FROM games";
@@ -70,7 +57,7 @@ public class Main {
       DrawText("DATABASE RECORDS:", textPadding, textPadding, textPadding, myWhite);
       DrawLine(textPadding, (2*textPadding), 300, (2*textPadding), myGray);
 
-      // Zeichnet alle Game-Listelemente
+      // Zeichnet alle Game-Listelemente ins Fenster
       for (int i=0; i<gameList.size(); i++) {
         Game game=gameList.get(i);
         String displayString=String.format("%s - (%s)", game.name(), game.publisher());

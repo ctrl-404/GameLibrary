@@ -1,6 +1,11 @@
-/home/xenobyte/projects/GameLibrary/src/main/java/de/htwsaar/Berta/Main.java
+/home/xenobyte/projects/GameLibrary/src/main/java/de/htwsaar/Berta/persistence/DatabaseSetup.java
+/home/xenobyte/projects/GameLibrary/src/main/java/de/htwsaar/Berta/presentation/CodeTemplate.java
+/home/xenobyte/projects/GameLibrary/src/main/java/de/htwsaar/Berta/servicelayer/GameService.java
+/home/xenobyte/projects/GameLibrary/src/main/java/de/htwsaar/Berta/servicelayer/SteamAPI.java
+/home/xenobyte/projects/GameLibrary/src/main/java/de/htwsaar/Berta/servicelayer/SteamIntegration.java
 /home/xenobyte/projects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/DefaultCatalog.java
 /home/xenobyte/projects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/DefaultSchema.java
+/home/xenobyte/projects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/Keys.java
 /home/xenobyte/projects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/Tables.java
 /home/xenobyte/projects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/tables/Games.java
 /home/xenobyte/projects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/tables/records/GamesRecord.java

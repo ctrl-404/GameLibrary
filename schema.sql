@@ -1,4 +1,7 @@
-CREATE TABLE games(
-  gameName TEXT NOT NULL,
-  publisherName TEXT NOT NULL
+CREATE TABLE IF NOT EXISTS games (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    steam_id INTEGER NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    price_cents INTEGER,
+    image_url TEXT
 );
