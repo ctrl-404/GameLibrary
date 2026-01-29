@@ -117,7 +117,7 @@
       <artifactId>exec-maven-plugin</artifactId>
       <version>3.1.0</version>
       <configuration>
-        <mainClass>de.htwsaar.Berta.servicelayer.SteamIntegration</mainClass>
+        <mainClass>de.htwsaar.Berta.servicelayer.Application</mainClass>
         <commandlineArgs>-XstartOnFirstThread</commandlineArgs>
       </configuration>
     </plugin>

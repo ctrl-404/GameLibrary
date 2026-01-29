@@ -1,35 +1,43 @@
 package de.htwsaar.Berta.servicelayer;
 
-import de.htwsaar.Berta.servicelayer.SteamAPI;
-import de.htwsaar.Berta.db.tables.records.GamesRecord;
 import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
 
-import static de.htwsaar.Berta.db.Tables.GAMES;
+import de.htwsaar.Berta.persistence.GameDTO;
+
+import java.io.IOException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
 
 public class GameService {
 
-  private final SteamAPI api;
   private final DSLContext dsl;
+  private final HttpClient httpClient;
+  private final SteamIntegration integration;
 
-  public GameService(String dbUrl) {
-    this.api = new SteamAPI();
-    this.dsl = DSL.using(dbUrl);
+  public GameService(DSLContext dsl) {
+    this.dsl = dsl;
+    this.httpClient = HttpClient.newHttpClient();
+    this.integration = new SteamIntegration(this);
   }
 
-  public void searchAndCacheGame(String searchTerm) {
-    var foundGames = api.searchGames(searchTerm);
+  public ArrayList<GameDTO> fetchFromSteamAPI(String searchTerm) {
+    ArrayList<GameDTO> returnedItemList = integration.fetch(searchTerm);
+    return returnedItemList;
+  }
 
-    for (var game : foundGames) {
-      dsl.insertInto(GAMES)
-        .set(GAMES.STEAM_ID, game.steamId())
-        .set(GAMES.NAME, game.name())
-        .set(GAMES.IMAGE_URL, game.imageUrl())
-        .set(GAMES.PRICE_CENTS, game.priceCents())
-        .onDuplicateKeyIgnore()
-        .execute();
-
-      System.out.println("Saved: " + game.name());
+  public HttpResponse<String> sendRequest(HttpRequest request) {
+    HttpResponse<String> response;
+    try {
+      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+      System.out.println(response.statusCode());
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+      return null;
     }
+
+    return response;
   }
+
 }
