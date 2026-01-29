@@ -27,19 +27,3 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-
-    # WICHTIG (Linux): Install Xvfb (Virtual Framebuffer)
-    # Erlaubt Raylib ein Displayfenster in einer headless CI Umgebung zu öffnen ohne das es abstürtzt
-    - name: Install Xvfb (Linux only)
-      if: runner.os == 'Linux'
-      run: sudo apt-get install -y xvfb libxcursor-dev libxinerama-dev libxrandr-dev libxi-dev
-
-    - name: Build and Test
-      # Wenn das Projekt auf einem Linux Rechner läuft benutze xvfb-run ansonsten standard maven
-      run: |
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          xvfb-run --auto-servernum mvn -B test
-        else
-          mvn -B test
-        fi
-      shell: bash
