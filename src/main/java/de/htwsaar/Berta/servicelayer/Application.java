@@ -13,15 +13,15 @@ public class Application {
 
     public Application() throws SQLException {
         databaseService = new DatabaseService();
-        gameService = new GameService(databaseService.dsl);
+        gameService = new SteamIntegration();
     }
 
     public static void main(String[] args) {
-        String foo = "Cyberpunk";
+        String foo = "Valheim";
 
         try {
             Application app = new Application();
-            ArrayList<GameDTO> fetched = app.gameService.fetchFromSteamAPI(foo);
+            ArrayList<GameDTO> fetched = app.gameService.fetchGameList(foo);
             for (GameDTO dto : fetched) {
                 System.out.println("Fetched: " + dto.name() + " | Steam ID: " + dto.steamId());
                 // app.databaseService.saveGameToDatabase(dto);

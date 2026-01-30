@@ -1,7 +1,6 @@
 /home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/persistence/DatabaseService.java
 /home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/persistence/DatabaseSetup.java
 /home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/persistence/GameDTO.java
-/home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/persistence/database.java
 /home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/presentation/CodeTemplate.java
 /home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/servicelayer/Application.java
 /home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/servicelayer/GameService.java

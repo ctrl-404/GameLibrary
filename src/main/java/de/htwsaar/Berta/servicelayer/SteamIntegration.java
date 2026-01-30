@@ -5,21 +5,23 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.htwsaar.Berta.persistence.GameDTO;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
-public class SteamIntegration {
+public class SteamIntegration implements GameService {
 
   // private static final String DB_URL = "jdbc:sqlite:database.db";
   private static final String STEAM_SEARCH_URL = "https://store.steampowered.com/api/storesearch/?term=%s&l=english&cc=US";
-  private final GameService gameService;
   private final ObjectMapper mapper;
+  private final HttpClient httpClient;
 
-  public SteamIntegration(GameService gameService) {
-    this.gameService = gameService;
+  public SteamIntegration() {
     this.mapper = new ObjectMapper();
+    this.httpClient = HttpClient.newHttpClient();
   }
 
   public static String createUrl(String searchTerm) {
@@ -43,12 +45,25 @@ public class SteamIntegration {
     }
   }
 
+  public HttpResponse<String> sendRequest(HttpRequest request) {
+    HttpResponse<String> response;
+    try {
+      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+      System.out.println(response.statusCode());
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+      return null;
+    }
+
+    return response;
+  }
+
   public ArrayList<GameDTO> fetch(String searchTerm) {
     String url = createUrl(searchTerm);
     System.out.println("Requesting URL: " + url);
 
     HttpRequest request = buildHttpRequest(url);
-    HttpResponse<String> response = gameService.sendRequest(request);
+    HttpResponse<String> response = sendRequest(request);
 
     JsonNode items = convertResponseToArray(response);
 
@@ -68,5 +83,10 @@ public class SteamIntegration {
       System.out.println("Steam API returned 0 items. Try a broader search term like 'Valve'.");
     }
     return dtoList;
+  }
+
+  @Override
+  public ArrayList<GameDTO> fetchGameList(String searchTerm) {
+    return fetch(searchTerm);
   }
 }
