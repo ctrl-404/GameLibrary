@@ -1,7 +1,6 @@
 package de.htwsaar.Berta.servicelayer;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import de.htwsaar.Berta.persistence.DatabaseService;
 import de.htwsaar.Berta.persistence.GameDTO;
@@ -16,21 +15,12 @@ public class Application {
         gameService = new SteamIntegration();
     }
 
-    public static void main(String[] args) {
-        String foo = "Valheim";
-
-        try {
-            Application app = new Application();
-            ArrayList<GameDTO> fetched = app.gameService.fetchGameList(foo);
-            for (GameDTO dto : fetched) {
-                System.out.println("Fetched: " + dto.name() + " | Steam ID: " + dto.steamId());
-                // app.databaseService.saveGameToDatabase(dto);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void run() {
+        String foo = "Battlefield";
+        gameService.fetchGameList(foo);
+        for (GameDTO dto : gameService.fetchGameList(foo)) {
+            System.out.println("Fetched: " + dto.name() + " | Steam ID: " + dto.steamId());
+            // databaseService.saveGameToDatabase(dto);
         }
-
     }
-
-    
 }
