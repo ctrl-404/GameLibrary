@@ -3,6 +3,7 @@ package de.htwsaar.Berta.persistence;
 import static de.htwsaar.Berta.db.Tables.GAMES;
 
 import java.sql.*;
+import java.util.List;
 
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -36,6 +37,21 @@ public class GameDatabase implements DatabaseService {
         dsl.deleteFrom(GAMES)
                 .where(GAMES.STEAM_ID.eq(dto.steamId()))
                 .execute();
+    }
+
+    @Override
+    public List<GameDTO> getAllGames() {
+        return dsl.selectFrom(GAMES)
+                .fetch(record -> new GameDTO(
+                        record.get(GAMES.NAME),
+                        record.get(GAMES.STEAM_ID),
+                        record.get(GAMES.IMAGE_URL),
+                        record.get(GAMES.PRICE_CENTS)));
+    }
+
+    @Override
+    public void safeGameToDatabase(GameDTO dto) {
+
     }
 
     @Override
