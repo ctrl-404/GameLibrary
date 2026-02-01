@@ -147,9 +147,7 @@ public class Screen {
         if (IsKeyPressed(KEY_UP)) {
             if (selectedIndex > 0) {
                 selectedIndex--;
-            } else {
-                searchBarFocused = true;
-            }
+            } 
         }
     }
 
