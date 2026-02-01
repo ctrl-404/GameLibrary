@@ -19,7 +19,7 @@ public class Screen {
     private int selectedIndex = 0;
     private final int itemsPerPage = 10;
 
-    private boolean isSearchResult;
+    private final boolean isSearchResult;
     private boolean isSearchOpen = false; // Replaces typingMode/searchBarFocused
     private final StringBuilder searchRequest = new StringBuilder();
 
@@ -44,7 +44,7 @@ public class Screen {
     }
 
     private void handleSearchInput() {
-        if (IsKeyPressed(KEY_C)) {
+        if (IsKeyPressed(KEY_DOWN)) {
             isSearchOpen = false;
             return;
         }
@@ -80,7 +80,7 @@ public class Screen {
 
     public void draw() {
         ClearBackground(DARKGRAY);
-        DrawText("GameLibrary - Berta", PADDING_TEXT, PADDING_TEXT, HEADER_SIZE, LIGHTGRAY);
+        DrawText("GameLibrary - Berta", PADDING_TEXT, PADDING_TEXT, HEADER_SIZE, RAYWHITE);
         if (games.isEmpty()) {
             DrawText("No games found. Press 'S' to search.", PADDING_TEXT, 100, PARAGRAPH_SIZE, GRAY);
         } else {
@@ -102,8 +102,8 @@ public class Screen {
         DrawRectangle(0, 0, WindowManager.WIDTH, WindowManager.HEIGHT, Fade(BLACK, 0.5f));
         int popupWidth = 500;
         int popupHeight = 200;
-        int x = (WindowManager.WIDTH - popupWidth) / 2; // Center X
-        int y = (WindowManager.HEIGHT - popupHeight) / 2; // Center Y
+        int x = (WindowManager.WIDTH - popupWidth) / 2;
+        int y = (WindowManager.HEIGHT - popupHeight) / 2;
 
         DrawRectangle(x, y, popupWidth, popupHeight, RAYWHITE);
         DrawRectangleLines(x, y, popupWidth, popupHeight, DARKGRAY);
@@ -119,8 +119,8 @@ public class Screen {
             int textWidth = MeasureText(searchRequest.toString(), 20);
             DrawText("_", x + 30 + textWidth, inputBoxY + 10, 20, BLACK);
         }
-        DrawText("Press ENTER to Search", x + 20, y + 120, 15, GRAY);
-        DrawText("Press [C] to Cancel", x + 20, y + 145, 15, GRAY);
+        DrawText("Press [ENTER] to Search", x + 20, y + 120, 15, GRAY);
+        DrawText("Press [DOWN] to Cancel", x + 20, y + 145, 15, GRAY);
     }
 
     private void returnToHome() {
@@ -131,22 +131,8 @@ public class Screen {
 
     private void handleNavigation() {
         if (!searchBarFocused) {
-            if (IsKeyPressed(KEY_DOWN) && selectedIndex < games.size() - 1) {
-                selectedIndex++;
-            }
-            if(IsKeyPressed(KEY_S)){
-                searchBarFocused = true;
-            }
-            if(IsKeyPressed(KEY_H)){
-                returnToHome();
-            }
-            if (IsKeyPressed(KEY_UP)) {
-                if (selectedIndex > 0) {
-                    selectedIndex--;
-                } else {
-                    searchBarFocused = true;
-                }
-            }
+            scroll();
+            handleSelection();
         } else {
             if (IsKeyPressed(KEY_DOWN)) {
                 searchBarFocused = false;
@@ -154,13 +140,32 @@ public class Screen {
         }
     }
 
+    private void scroll(){
+        if (IsKeyPressed(KEY_DOWN) && selectedIndex < games.size() - 1) {
+            selectedIndex++;
+        }
+        if (IsKeyPressed(KEY_UP)) {
+            if (selectedIndex > 0) {
+                selectedIndex--;
+            } else {
+                searchBarFocused = true;
+            }
+        }
+    }
+
     private void handleSelection() {
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) {
-            if (!games.isEmpty() && !searchBarFocused) {
+            if (!games.isEmpty() && isSearchResult) {
                 GameDTO chosenGame = games.get(selectedIndex);
                 screenManager.getDbService().saveGameToDatabase(chosenGame);
                 System.out.println("Saved via Enter: " + chosenGame.name());
             }
+        }
+        if(IsKeyPressed(KEY_S)){
+            searchBarFocused = true;
+        }
+        if(IsKeyPressed(KEY_H)){
+            returnToHome();
         }
     }
 
@@ -177,7 +182,7 @@ public class Screen {
                 DrawText(gameString, PADDING_TEXT + 10, yPos + 10, HIGHLIGHTED_SIZE, GREEN);
             } else {
                 String gameString = String.format("%s -- %d ct", games.get(i).name(), games.get(i).price());
-                DrawText(gameString, PADDING_TEXT + 10, yPos + 10, PARAGRAPH_SIZE, RAYWHITE);
+                DrawText(gameString, PADDING_TEXT + 10, yPos + 10, PARAGRAPH_SIZE, GRAY);
             }
         }
     }
