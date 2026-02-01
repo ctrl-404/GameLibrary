@@ -5,12 +5,16 @@ package de.htwsaar.Berta.db.tables;
 
 
 import de.htwsaar.Berta.db.DefaultSchema;
+import de.htwsaar.Berta.db.Keys;
 import de.htwsaar.Berta.db.tables.records.GamesRecord;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
@@ -21,6 +25,7 @@ import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -48,14 +53,29 @@ public class Games extends TableImpl<GamesRecord> {
     }
 
     /**
-     * The column <code>games.gameName</code>.
+     * The column <code>games.id</code>.
      */
-    public final TableField<GamesRecord, String> GAMENAME = createField(DSL.name("gameName"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<GamesRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.identity(true), this, "");
 
     /**
-     * The column <code>games.publisherName</code>.
+     * The column <code>games.steam_id</code>.
      */
-    public final TableField<GamesRecord, String> PUBLISHERNAME = createField(DSL.name("publisherName"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<GamesRecord, Integer> STEAM_ID = createField(DSL.name("steam_id"), SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>games.name</code>.
+     */
+    public final TableField<GamesRecord, String> NAME = createField(DSL.name("name"), SQLDataType.CLOB.nullable(false), this, "");
+
+    /**
+     * The column <code>games.price_cents</code>.
+     */
+    public final TableField<GamesRecord, Integer> PRICE_CENTS = createField(DSL.name("price_cents"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>games.image_url</code>.
+     */
+    public final TableField<GamesRecord, String> IMAGE_URL = createField(DSL.name("image_url"), SQLDataType.CLOB, this, "");
 
     private Games(Name alias, Table<GamesRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -89,6 +109,21 @@ public class Games extends TableImpl<GamesRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
+    }
+
+    @Override
+    public Identity<GamesRecord, Integer> getIdentity() {
+        return (Identity<GamesRecord, Integer>) super.getIdentity();
+    }
+
+    @Override
+    public UniqueKey<GamesRecord> getPrimaryKey() {
+        return Keys.GAMES__PK_GAMES;
+    }
+
+    @Override
+    public List<UniqueKey<GamesRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.GAMES__UK_GAMES_59091905);
     }
 
     @Override

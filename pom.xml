@@ -38,6 +38,11 @@
     <artifactId>jaylib</artifactId>
     <version>5.5.0-2</version>
   </dependency>
+  <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.17.0</version>
+  </dependency>
 </dependencies>
 
 <build>
@@ -112,7 +117,7 @@
       <artifactId>exec-maven-plugin</artifactId>
       <version>3.1.0</version>
       <configuration>
-        <mainClass>de.htwsaar.Berta.presentation.CodeTemplate</mainClass>
+        <mainClass>de.htwsaar.Berta.Main</mainClass>
         <commandlineArgs>-XstartOnFirstThread</commandlineArgs>
       </configuration>
     </plugin>
