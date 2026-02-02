@@ -19,7 +19,6 @@ public class Application {
         try {
             WindowManager windowManager = new WindowManager(databaseService);
             windowManager.run();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

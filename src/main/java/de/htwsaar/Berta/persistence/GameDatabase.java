@@ -50,11 +50,6 @@ public class GameDatabase implements DatabaseService {
     }
 
     @Override
-    public void safeGameToDatabase(GameDTO dto) {
-
-    }
-
-    @Override
     public void close() throws SQLException {
         conn.close();
     }

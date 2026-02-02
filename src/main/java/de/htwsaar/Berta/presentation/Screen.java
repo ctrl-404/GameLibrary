@@ -2,8 +2,9 @@ package de.htwsaar.Berta.presentation;
 
 import static com.raylib.Colors.*;
 import static com.raylib.Raylib.*;
-import static de.htwsaar.Berta.presentation.Padding.PADDING_TEXT;
+import static de.htwsaar.Berta.presentation.Padding.PADDING;
 import static de.htwsaar.Berta.presentation.Textsize.*;
+import static de.htwsaar.Berta.presentation.WindowManager.*;
 
 import de.htwsaar.Berta.persistence.GameDTO;
 import de.htwsaar.Berta.servicelayer.Application;
@@ -20,10 +21,13 @@ public class Screen {
     private final int itemsPerPage = 10;
 
     private final boolean isSearchResult;
-    private boolean isSearchOpen = false; // Replaces typingMode/searchBarFocused
     private final StringBuilder searchRequest = new StringBuilder();
 
+    private boolean isSearchOpen = false;
     private boolean searchBarFocused = false;
+    private boolean isDetailOpen = false;
+
+    private GameDTO selectedGame = null;
 
     public Screen(ScreenManager manager, List<GameDTO> games, boolean isSearchResult) {
         this.screenManager = manager;
@@ -36,7 +40,7 @@ public class Screen {
             handleSearchInput();
         } else {
             handleNavigation();
-            if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_F)) {
+            if (IsKeyPressed(KEY_S)) {
                 isSearchOpen = true;
                 searchRequest.setLength(0);
             }
@@ -66,13 +70,11 @@ public class Screen {
     private void performSearch() {
         isSearchOpen = false;
         System.out.println("Searching for: " + searchRequest);
-
         try {
             Application app = new Application();
             ArrayList<GameDTO> fetched = app.gameService.fetchGameList(searchRequest.toString());
             Screen resultScreen = new Screen(screenManager, fetched, true);
             screenManager.setScreen(resultScreen);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,47 +82,69 @@ public class Screen {
 
     public void draw() {
         ClearBackground(DARKGRAY);
-        DrawText("GameLibrary - Berta", PADDING_TEXT, PADDING_TEXT, HEADER_SIZE, RAYWHITE);
+        DrawText("GameLibrary - Berta", PADDING, PADDING, HEADER_SIZE, RAYWHITE);
         if (games.isEmpty()) {
-            DrawText("No games found. Press 'S' to search.", PADDING_TEXT, 100, PARAGRAPH_SIZE, GRAY);
+            DrawText("No games found. Press 'S' to search.", PADDING, 100, PARAGRAPH_SIZE, GRAY);
         } else {
             drawList();
             drawPaginationInfo();
         }
         if (!isSearchOpen) {
             DrawText("[S] Search", WindowManager.WIDTH - 150, WindowManager.HEIGHT - 50, 20, LIGHTGRAY);
-            if(isSearchResult){
-                DrawText("[H] Home", WindowManager.WIDTH - 150, WindowManager.HEIGHT - (50 + PADDING_TEXT), 20, LIGHTGRAY);
+            if (isSearchResult) {
+                DrawText("[H] Home", WindowManager.WIDTH - 150, WindowManager.HEIGHT - (50 + PADDING), 20, LIGHTGRAY);
             }
         }
         if (isSearchOpen) {
+            drawPopup();
             drawSearchPopup();
+        }
+        if (isDetailOpen && selectedGame != null) {
+            drawPopup();
+            drawDetailPopup();
         }
     }
 
-    private void drawSearchPopup() {
+    private void drawPopup() {
         DrawRectangle(0, 0, WindowManager.WIDTH, WindowManager.HEIGHT, Fade(BLACK, 0.5f));
-        int popupWidth = 500;
-        int popupHeight = 200;
-        int x = (WindowManager.WIDTH - popupWidth) / 2;
-        int y = (WindowManager.HEIGHT - popupHeight) / 2;
+        DrawRectangle(POP_X, POP_Y, POP_WIDTH, POP_HEIGHT, RAYWHITE);
+        DrawRectangleLines(POP_X, POP_Y, POP_WIDTH, POP_HEIGHT, DARKGRAY);
+    }
 
-        DrawRectangle(x, y, popupWidth, popupHeight, RAYWHITE);
-        DrawRectangleLines(x, y, popupWidth, popupHeight, DARKGRAY);
-        DrawText("Search Steam", x + 20, y + 20, 20, DARKGRAY);
+    private void drawSearchPopup() {
+        DrawText("Search Steam", POP_X + PADDING, POP_Y + PADDING, 20, DARKGRAY);
 
-        int inputBoxY = y + 60;
+        int inputBoxY = POP_Y + 60;
 
-        DrawRectangle(x + 20, inputBoxY, popupWidth - 40, 40, LIGHTGRAY);
-        DrawRectangleLines(x + 20, inputBoxY, popupWidth - 40, 40, DARKGRAY);
-        DrawText(searchRequest.toString(), x + 30, inputBoxY + 10, 20, BLACK);
+        DrawRectangle(POP_X + 20, inputBoxY, POP_WIDTH - 40, 40, LIGHTGRAY);
+        DrawRectangleLines(POP_X + 20, inputBoxY, POP_WIDTH - 40, 40, DARKGRAY);
+        DrawText(searchRequest.toString(), POP_X + 30, inputBoxY + 10, 20, BLACK);
 
         if ((GetTime() * 2) % 2 > 1) {
             int textWidth = MeasureText(searchRequest.toString(), 20);
-            DrawText("_", x + 30 + textWidth, inputBoxY + 10, 20, BLACK);
+            DrawText("_", POP_X + 30 + textWidth, inputBoxY + 10, HIGHLIGHTED_SIZE, BLACK);
         }
-        DrawText("Press [ENTER] to Search", x + 20, y + 120, 15, GRAY);
-        DrawText("Press [DOWN] to Cancel", x + 20, y + 145, 15, GRAY);
+        DrawText("Press [ENTER] to Search", POP_X + PADDING, POP_Y + 120, PARAGRAPH_SIZE, GRAY);
+        DrawText("Press [DOWN] to Cancel", POP_X + PADDING, POP_Y + 145, PARAGRAPH_SIZE, GRAY);
+    }
+
+    private void drawDetailPopup() {
+        DrawText("Game Details", POP_X + PADDING, POP_Y + PADDING, HEADER_SIZE, DARKGRAY);
+
+        String nameText = String.format("Name: %1.20s ...", selectedGame.name());
+        String priceText = "Price: " + (selectedGame.price() / 100.0) + ",-";
+        String steamID = "ID: " + selectedGame.steamId();
+
+        DrawText(steamID, POP_X + PADDING, POP_Y + 70, HIGHLIGHTED_SIZE, BLACK);
+        DrawText(nameText, POP_X + PADDING, POP_Y + 100, HIGHLIGHTED_SIZE, BLACK);
+        DrawText(priceText, POP_X + PADDING, POP_Y + 130, HIGHLIGHTED_SIZE, BLACK);
+
+        DrawText("Press [DOWN] to Close", POP_X + PADDING, POP_Y + POP_HEIGHT - 30, PARAGRAPH_SIZE, GRAY);
+        if (isSearchResult) {
+            DrawText("Press [C] to Save", POP_X + PADDING + 200, POP_Y + POP_HEIGHT - 30, PARAGRAPH_SIZE, GRAY);
+        }else{
+            DrawText("Press [R] to Remove", POP_X + PADDING + 200, POP_Y + POP_HEIGHT - 30, PARAGRAPH_SIZE, GRAY);
+        }
     }
 
     private void returnToHome() {
@@ -153,16 +177,35 @@ public class Screen {
 
     private void handleSelection() {
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) {
-            if (!games.isEmpty() && isSearchResult) {
-                GameDTO chosenGame = games.get(selectedIndex);
-                screenManager.getDbService().saveGameToDatabase(chosenGame);
-                System.out.println("Saved via Enter: " + chosenGame.name());
+            if (!games.isEmpty()) {
+                selectedGame = games.get(selectedIndex);
+                isDetailOpen = true;
             }
         }
-        if(IsKeyPressed(KEY_S)){
+        if (isDetailOpen && IsKeyPressed(KEY_C) && isSearchResult){
+            isDetailOpen = false;
+            GameDTO chosenGame = games.get(selectedIndex);
+            screenManager.getDbService().saveGameToDatabase(chosenGame);
+            System.out.println("Saved via Enter: " + chosenGame.name());
+        }
+        if (isDetailOpen && IsKeyPressed(KEY_R) && !isSearchResult){
+            isDetailOpen = false;
+            GameDTO chosenGame = games.get(selectedIndex);
+            screenManager.getDbService().removeGameFromDatabase(chosenGame);
+            returnToHome();
+            System.out.println("Removed: " + chosenGame.name());
+        }
+        if (isDetailOpen && IsKeyPressed(KEY_DOWN)) {
+            isDetailOpen = false;
+            searchBarFocused = false;
+        }
+        if(!isDetailOpen && IsKeyPressed(KEY_S)){
+            isDetailOpen = false;
             searchBarFocused = true;
         }
         if(IsKeyPressed(KEY_H)){
+            isDetailOpen = false;
+            searchBarFocused = false;
             returnToHome();
         }
     }
@@ -173,14 +216,14 @@ public class Screen {
 
         for (int i = startDisplayIndex; i < endDisplayIndex; i++) {
             int localIndex = i - startDisplayIndex;
-            int yPos = (2 * PADDING_TEXT + 10) + (localIndex * (2 * PADDING_TEXT + 10));
+            int yPos = (2 * PADDING + 10) + (localIndex * (2 * PADDING + 10));
             if (i == selectedIndex && !searchBarFocused) {
-                DrawRectangle(PADDING_TEXT, yPos, WindowManager.WIDTH - 2 * PADDING_TEXT, 2 * PADDING_TEXT, GRAY);
-                String gameString = String.format(">  %s -- %d ct", games.get(i).name(), games.get(i).price());
-                DrawText(gameString, PADDING_TEXT + 10, yPos + 10, HIGHLIGHTED_SIZE, GREEN);
+                DrawRectangle(PADDING, yPos, WindowManager.WIDTH - 2 * PADDING, 2 * PADDING, GRAY);
+                String gameString = String.format(">  %s -- %.2f,-", games.get(i).name(), games.get(i).price()/100.0);
+                DrawText(gameString, PADDING + 10, yPos + 10, HIGHLIGHTED_SIZE, GREEN);
             } else {
-                String gameString = String.format("%s -- %d ct", games.get(i).name(), games.get(i).price());
-                DrawText(gameString, PADDING_TEXT + 10, yPos + 10, PARAGRAPH_SIZE, GRAY);
+                String gameString = String.format("%s -- %.2f,-", games.get(i).name(), games.get(i).price()/100.0);
+                DrawText(gameString, PADDING + 10, yPos + 10, PARAGRAPH_SIZE, GRAY);
             }
         }
     }
@@ -189,6 +232,6 @@ public class Screen {
         int totalPages = (int) Math.ceil((double) games.size() / itemsPerPage);
         int currentPage = (selectedIndex / itemsPerPage) + 1;
         String pageText = String.format("Page %d of %d (Total: %d)", currentPage, totalPages, games.size());
-        DrawText(pageText, PADDING_TEXT, WindowManager.HEIGHT - 30, 15, RAYWHITE);
+        DrawText(pageText, PADDING, WindowManager.HEIGHT - 30, 15, RAYWHITE);
     }
 }

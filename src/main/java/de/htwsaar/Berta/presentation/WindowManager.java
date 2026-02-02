@@ -11,6 +11,10 @@ import static com.raylib.Raylib.*;
 public class WindowManager {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
+    public static final int POP_WIDTH = 500;
+    public static final int POP_HEIGHT = 200;
+    public static final int POP_X = (WIDTH - POP_WIDTH) / 2;
+    public static final int POP_Y = (HEIGHT - POP_HEIGHT) / 2;
 
     private final ScreenManager screenManager;
 
