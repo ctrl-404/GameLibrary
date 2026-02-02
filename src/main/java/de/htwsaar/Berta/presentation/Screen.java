@@ -220,7 +220,7 @@ public class Screen {
             if (i == selectedIndex && !searchBarFocused) {
                 DrawRectangle(PADDING, yPos, WindowManager.WIDTH - 2 * PADDING, 2 * PADDING, GRAY);
                 String gameString = String.format(">  %s -- %.2f,-", games.get(i).name(), games.get(i).price()/100.0);
-                DrawText(gameString, PADDING + 10, yPos + 10, HIGHLIGHTED_SIZE, GREEN);
+                DrawText(gameString, PADDING + 10, yPos + 10, HIGHLIGHTED_SIZE, SKYBLUE);
             } else {
                 String gameString = String.format("%s -- %.2f,-", games.get(i).name(), games.get(i).price()/100.0);
                 DrawText(gameString, PADDING + 10, yPos + 10, PARAGRAPH_SIZE, GRAY);

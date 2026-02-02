@@ -27,7 +27,6 @@ public class SteamAPI {
   public List<SteamGameDto> searchGames(String query) {
     List<SteamGameDto> results = new ArrayList<>();
     try {
-
       String formattedUrl = String.format(SEARCH_URL, query.replace(" ", "+"));
       HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(formattedUrl))
