@@ -7,15 +7,15 @@ de/htwsaar/Berta/servicelayer/SteamIntegration.class
 de/htwsaar/Berta/db/tables/records/GamesRecord.class
 de/htwsaar/Berta/db/DefaultCatalog.class
 de/htwsaar/Berta/servicelayer/GameService.class
-de/htwsaar/Berta/servicelayer/SteamAPI.class
 de/htwsaar/Berta/presentation/Textsize.class
+de/htwsaar/Berta/servicelayer/SteamAPI.class
 de/htwsaar/Berta/db/Tables.class
 de/htwsaar/Berta/presentation/ScreenManager.class
 de/htwsaar/Berta/persistence/DatabaseService.class
 de/htwsaar/Berta/servicelayer/SteamAPI$SteamGameDto.class
 de/htwsaar/Berta/presentation/Padding.class
 de/htwsaar/Berta/presentation/WindowManager.class
-de/htwsaar/Berta/Main.class
 de/htwsaar/Berta/db/DefaultSchema.class
+de/htwsaar/Berta/Main.class
 de/htwsaar/Berta/persistence/DatabaseSetup.class
 de/htwsaar/Berta/db/Keys.class
