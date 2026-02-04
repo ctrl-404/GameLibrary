@@ -1,21 +1,26 @@
 package de.htwsaar.Berta.servicelayer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.htwsaar.Berta.persistence.GameDTO;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+/**
+ * Implementierung des GameService zur Kommunikation mit der Steam Store API.
+ */
 public class SteamIntegration implements GameService {
 
-  // private static final String DB_URL = "jdbc:sqlite:database.db";
-  private static final String STEAM_SEARCH_URL = "https://store.steampowered.com/api/storesearch/?term=%s&l=english&cc=US";
+  private static final String STEAM_SEARCH_URL_TEMPLATE = "https://store.steampowered.com/api/storesearch/?term=%s&l=english&cc=US";
   private final ObjectMapper mapper;
   private final HttpClient httpClient;
 
@@ -24,69 +29,63 @@ public class SteamIntegration implements GameService {
     this.httpClient = HttpClient.newHttpClient();
   }
 
-  public static String createUrl(String searchTerm) {
-    String encodedSearch = java.net.URLEncoder.encode(searchTerm, java.nio.charset.StandardCharsets.UTF_8);
-    String url = String.format(STEAM_SEARCH_URL, encodedSearch);
-    return url;
-  }
-
-  public static HttpRequest buildHttpRequest(String url) {
-    return HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
-  }
-
-  public JsonNode convertResponseToArray(HttpResponse<String> response) {
-    try {
-      JsonNode root = mapper.readTree(response.body());
-      JsonNode items = root.path("items");
-      return items;
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  public HttpResponse<String> sendRequest(HttpRequest request) {
-    HttpResponse<String> response;
-    try {
-      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-      System.out.println(response.statusCode());
-    } catch (IOException | InterruptedException e) {
-      e.printStackTrace();
-      return null;
+  @Override
+  public List<GameDTO> fetchGameList(String searchTerm) {
+    if (searchTerm == null || searchTerm.isBlank()) {
+      return Collections.emptyList();
     }
 
-    return response;
-  }
-
-  public ArrayList<GameDTO> fetch(String searchTerm) {
     String url = createUrl(searchTerm);
-    System.out.println("Requesting URL: " + url);
+    System.out.println("API request: " + url);
 
-    HttpRequest request = buildHttpRequest(url);
-    HttpResponse<String> response = sendRequest(request);
+    try {
+      HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-    JsonNode items = convertResponseToArray(response);
-
-    ArrayList<GameDTO> dtoList = new ArrayList<>();
-
-    if (items.isArray() && !items.isEmpty()) {
-      for (JsonNode item : items) {
-        int steamId = item.path("id").asInt();
-        String name = item.path("name").asText();
-        String image_url = item.path("tiny_image").asText();
-        int price = item.path("price").path("final").asInt(0);
-        GameDTO dto = new GameDTO(name, steamId, image_url, price);
-        dtoList.add(dto);
-        System.out.println("Found Game: " + name + " (ID: " + steamId + ")");
+      if (response.statusCode() != 200) {
+        System.err.println("API issue: Status Code " + response.statusCode());
+        return Collections.emptyList();
       }
-    } else {
-      System.out.println("Steam API returned 0 items. Try a broader search term like 'Valve'.");
+
+      return parseResponse(response.body());
+
+    } catch (IOException | InterruptedException e) {
+      System.err.println("Communication issue with Steam" + e.getMessage());
+      return Collections.emptyList();
+    }
+  }
+
+  private String createUrl(String searchTerm) {
+    String encodedSearch = URLEncoder.encode(searchTerm, StandardCharsets.UTF_8);
+    return String.format(STEAM_SEARCH_URL_TEMPLATE, encodedSearch);
+  }
+
+  private List<GameDTO> parseResponse(String jsonBody) {
+    List<GameDTO> dtoList = new ArrayList<>();
+    try {
+      JsonNode root = mapper.readTree(jsonBody);
+      JsonNode items = root.path("items");
+
+      if (items.isArray() && !items.isEmpty()) {
+        for (JsonNode item : items) {
+          dtoList.add(mapJsonToDTO(item));
+        }
+      } else {
+        System.out.println("No Games found");
+      }
+    } catch (IOException e) {
+      System.err.println("Parsing Issue with JSON response" + e.getMessage());
     }
     return dtoList;
   }
 
-  @Override
-  public ArrayList<GameDTO> fetchGameList(String searchTerm) {
-    return fetch(searchTerm);
+  private GameDTO mapJsonToDTO(JsonNode item) {
+    int steamId = item.path("id").asInt();
+    String name = String.valueOf(item.path("name"));
+    String imageUrl = String.valueOf(item.path("tiny_image"));
+    int price = item.path("price").path("final").asInt(0);
+
+    System.out.printf("Game found: %s (ID: %d)%n", name, steamId);
+    return new GameDTO(name, steamId, imageUrl, price);
   }
 }

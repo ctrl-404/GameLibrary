@@ -2,16 +2,36 @@ package de.htwsaar.Berta.persistence;
 
 import java.util.List;
 
-public interface DatabaseService {
+/**
+ * Schnittstelle für Datenbankoperationen bezüglich der Spieleverwaltung.
+ */
+public interface DatabaseService extends AutoCloseable {
 
-    public void saveGameToDatabase(GameDTO dto);
+    /**
+     * Speichert ein Spiel in der Datenbank oder aktualisiert es, falls es bereits existiert.
+     *
+     * @param dto Das zu speichernde Spiel.
+     */
+    void saveGameToDatabase(GameDTO dto);
 
-    public void close() throws Exception;
+    /**
+     * Entfernt ein Spiel aus der Datenbank.
+     *
+     * @param dto Das zu entfernende Spiel.
+     */
+    void removeGameFromDatabase(GameDTO dto);
 
-    public void SetupDatabase();
+    /**
+     * Ruft alle gespeicherten Spiele aus der Datenbank ab.
+     *
+     * @return Eine Liste aller gespeicherten Spiele.
+     */
+    List<GameDTO> getAllGames();
 
-    public void removeGameFromDatabase(GameDTO dto);
-
-    public List<GameDTO> getAllGames();
+    /**
+     * Schließt die Datenbankverbindung.
+     */
+    @Override
+    void close();
 }
 
