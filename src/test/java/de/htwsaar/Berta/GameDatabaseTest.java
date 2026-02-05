@@ -5,9 +5,11 @@ import de.htwsaar.Berta.persistence.GameDatabase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.sql.SQLException;
-import java.util.List;
 
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -16,15 +18,36 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameDatabaseTest {
 
     private GameDatabase db;
+    private final String TEST_DB_FILE = "test_database.db";
+    private final String TEST_DB_URL = "jdbc:sqlite:" + TEST_DB_FILE;
+
+    private static final String CREATE_TABLE_SQL = """
+            CREATE TABLE IF NOT EXISTS games (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                steam_id INTEGER NOT NULL UNIQUE,
+                name TEXT NOT NULL,
+                price_cents INTEGER,
+                image_url TEXT
+            );
+            """;
 
     @BeforeEach
-    void setUp() throws SQLException {
-        db = new GameDatabase();
+    void setUp() throws Exception {
+        try (Connection conn = DriverManager.getConnection(TEST_DB_URL);
+             java.sql.Statement stmt = conn.createStatement()) {
+            stmt.execute(CREATE_TABLE_SQL);
+        }
+        db = new GameDatabase() {
+        };
     }
 
     @AfterEach
     void tearDown() {
         db.close();
+        File dbFile = new File(TEST_DB_FILE);
+        if (dbFile.exists()) {
+            dbFile.delete();
+        }
     }
 
     @Test

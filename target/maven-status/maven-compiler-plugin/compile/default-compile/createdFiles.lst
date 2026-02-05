@@ -2,6 +2,7 @@ de/htwsaar/Berta/persistence/GameDatabase.class
 de/htwsaar/Berta/persistence/GameDTO.class
 de/htwsaar/Berta/presentation/Screen.class
 de/htwsaar/Berta/db/tables/Games.class
+de/htwsaar/Berta/MacBootstrap.class
 de/htwsaar/Berta/servicelayer/Application.class
 de/htwsaar/Berta/servicelayer/SteamIntegration.class
 de/htwsaar/Berta/db/tables/records/GamesRecord.class
