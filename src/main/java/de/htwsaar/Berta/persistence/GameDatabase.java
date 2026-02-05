@@ -2,19 +2,29 @@ package de.htwsaar.Berta.persistence;
 
 import static de.htwsaar.Berta.db.Tables.GAMES;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
-
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
+/**
+ * Implementierung des DatabaseService unter Verwendung von SQLite und jOOQ.
+ */
 public class GameDatabase implements DatabaseService {
 
-    public Connection conn;
-    public DSLContext dsl;
+    private final Connection conn;
+    private final DSLContext dsl;
+    private static final String DB_URL = "jdbc:sqlite:database.db";
 
+    /**
+     * Konstruktor: Stellt die Verbindung zur Datenbank her.
+     *
+     * @throws SQLException Wenn die Verbindung fehlschlägt.
+     */
     public GameDatabase() throws SQLException {
-        this.conn = DriverManager.getConnection("jdbc:sqlite:database.db");
+        this.conn = DriverManager.getConnection(DB_URL);
         this.dsl = DSL.using(conn);
     }
 
@@ -23,13 +33,13 @@ public class GameDatabase implements DatabaseService {
         dsl.insertInto(GAMES)
                 .set(GAMES.NAME, dto.name())
                 .set(GAMES.STEAM_ID, dto.steamId())
-                .set(GAMES.IMAGE_URL, dto.image_url())
+                .set(GAMES.IMAGE_URL, dto.imageUrl())
                 .set(GAMES.PRICE_CENTS, dto.price())
                 .onConflict(GAMES.STEAM_ID)
                 .doUpdate()
                 .set(GAMES.NAME, dto.name())
+                .set(GAMES.PRICE_CENTS, dto.price()) // Preis könnte sich ändern
                 .execute();
-
     }
 
     @Override
@@ -50,18 +60,13 @@ public class GameDatabase implements DatabaseService {
     }
 
     @Override
-    public void safeGameToDatabase(GameDTO dto) {
-
+    public void close() {
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    @Override
-    public void close() throws SQLException {
-        conn.close();
-    }
-
-    @Override
-    public void SetupDatabase() {
-
-    }
-
 }

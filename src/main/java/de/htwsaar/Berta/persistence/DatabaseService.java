@@ -1,26 +1,37 @@
 package de.htwsaar.Berta.persistence;
 
-import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
-
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-import static de.htwsaar.Berta.db.Tables.GAMES;
+/**
+ * Schnittstelle für Datenbankoperationen bezüglich der Spieleverwaltung.
+ */
+public interface DatabaseService extends AutoCloseable {
 
-public interface DatabaseService {
-
-    public void safeGameToDatabase(GameDTO dto);
-
-    public void close() throws Exception;
-
-    public void SetupDatabase();
-
+    /**
+     * Speichert ein Spiel in der Datenbank oder aktualisiert es, falls es bereits existiert.
+     *
+     * @param dto Das zu speichernde Spiel.
+     */
     void saveGameToDatabase(GameDTO dto);
 
+    /**
+     * Entfernt ein Spiel aus der Datenbank.
+     *
+     * @param dto Das zu entfernende Spiel.
+     */
     void removeGameFromDatabase(GameDTO dto);
 
-    public List<GameDTO> getAllGames();
+    /**
+     * Ruft alle gespeicherten Spiele aus der Datenbank ab.
+     *
+     * @return Eine Liste aller gespeicherten Spiele.
+     */
+    List<GameDTO> getAllGames();
+
+    /**
+     * Schließt die Datenbankverbindung.
+     */
+    @Override
+    void close();
 }
 

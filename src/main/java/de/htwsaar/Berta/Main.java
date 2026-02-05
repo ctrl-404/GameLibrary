@@ -9,12 +9,7 @@ public class Main {
     public static void main(String[] args) {
 
         Application application = null;
-        try {
-            application = new Application();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        application = new Application();
         application.run();
     }
 

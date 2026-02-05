@@ -1,27 +1,26 @@
 package de.htwsaar.Berta.servicelayer;
 
+import de.htwsaar.Berta.persistence.DatabaseSetup;
+import de.htwsaar.Berta.presentation.RaylibUserInterface;
 import java.sql.SQLException;
-import de.htwsaar.Berta.persistence.DatabaseService;
-import de.htwsaar.Berta.persistence.GameDatabase;
-import de.htwsaar.Berta.presentation.WindowManager;
 
+/**
+ * Hauptklasse der Anwendung (Einstiegspunkt).
+ */
 public class Application {
 
-    public final DatabaseService databaseService;
-    public final GameService gameService;
+  public Application() {}
 
-    public Application() throws SQLException {
-        databaseService = new GameDatabase();
-        gameService = new SteamIntegration();
+  /**
+   * Startet die Anwendung und initialisiert die UI.
+   */
+  public void run() {
+    try {
+      DatabaseSetup.init();
+      UserInterface ui = new RaylibUserInterface();
+      ui.run();
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-
-    public void run() {
-        try {
-            WindowManager windowManager = new WindowManager(databaseService);
-            windowManager.run();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+  }
 }
