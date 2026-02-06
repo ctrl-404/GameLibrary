@@ -121,20 +121,4 @@ public class GamesRecord extends UpdatableRecordImpl<GamesRecord> {
         setImageUrl(imageUrl);
         resetChangedOnNotNull();
     }
-
-    /**
-     * Create a detached, initialised GamesRecord
-     */
-    public GamesRecord(de.htwsaar.Berta.db.tables.pojos.Games value) {
-        super(Games.GAMES);
-
-        if (value != null) {
-            setId(value.getId());
-            setSteamId(value.getSteamId());
-            setName(value.getName());
-            setPriceCents(value.getPriceCents());
-            setImageUrl(value.getImageUrl());
-            resetChangedOnNotNull();
-        }
-    }
 }

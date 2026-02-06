@@ -96,12 +96,6 @@
             <packageName>de.htwsaar.Berta.db</packageName>
             <directory>${project.build.directory}/generated-sources/jooq</directory>
           </target>
-
-          <!-- Unsicher ob wir das brauchen, aber sicher ist sicher -->
-          <generate>
-            <daos>true</daos>
-            <pojos>true</pojos>
-          </generate>
         </generator>
       </configuration>
     </execution>
