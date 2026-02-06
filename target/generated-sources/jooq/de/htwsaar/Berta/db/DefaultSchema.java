@@ -28,7 +28,7 @@ public class DefaultSchema extends SchemaImpl {
     public static final DefaultSchema DEFAULT_SCHEMA = new DefaultSchema();
 
     /**
-     * The table <code>games</code>.
+     * The table <code>GAMES</code>.
      */
     public final Games GAMES = Games.GAMES;
 

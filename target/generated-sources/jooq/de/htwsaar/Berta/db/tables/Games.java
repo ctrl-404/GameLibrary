@@ -40,7 +40,7 @@ public class Games extends TableImpl<GamesRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>games</code>
+     * The reference instance of <code>GAMES</code>
      */
     public static final Games GAMES = new Games();
 
@@ -53,29 +53,29 @@ public class Games extends TableImpl<GamesRecord> {
     }
 
     /**
-     * The column <code>games.id</code>.
+     * The column <code>GAMES.ID</code>.
      */
-    public final TableField<GamesRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.identity(true), this, "");
+    public final TableField<GamesRecord, Integer> ID = createField(DSL.name("ID"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>games.steam_id</code>.
+     * The column <code>GAMES.STEAM_ID</code>.
      */
-    public final TableField<GamesRecord, Integer> STEAM_ID = createField(DSL.name("steam_id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<GamesRecord, Integer> STEAM_ID = createField(DSL.name("STEAM_ID"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>games.name</code>.
+     * The column <code>GAMES.NAME</code>.
      */
-    public final TableField<GamesRecord, String> NAME = createField(DSL.name("name"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<GamesRecord, String> NAME = createField(DSL.name("NAME"), SQLDataType.CLOB.nullable(false), this, "");
 
     /**
-     * The column <code>games.price_cents</code>.
+     * The column <code>GAMES.PRICE_CENTS</code>.
      */
-    public final TableField<GamesRecord, Integer> PRICE_CENTS = createField(DSL.name("price_cents"), SQLDataType.INTEGER, this, "");
+    public final TableField<GamesRecord, Integer> PRICE_CENTS = createField(DSL.name("PRICE_CENTS"), SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>games.image_url</code>.
+     * The column <code>GAMES.IMAGE_URL</code>.
      */
-    public final TableField<GamesRecord, String> IMAGE_URL = createField(DSL.name("image_url"), SQLDataType.CLOB, this, "");
+    public final TableField<GamesRecord, String> IMAGE_URL = createField(DSL.name("IMAGE_URL"), SQLDataType.CLOB, this, "");
 
     private Games(Name alias, Table<GamesRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -86,24 +86,24 @@ public class Games extends TableImpl<GamesRecord> {
     }
 
     /**
-     * Create an aliased <code>games</code> table reference
+     * Create an aliased <code>GAMES</code> table reference
      */
     public Games(String alias) {
         this(DSL.name(alias), GAMES);
     }
 
     /**
-     * Create an aliased <code>games</code> table reference
+     * Create an aliased <code>GAMES</code> table reference
      */
     public Games(Name alias) {
         this(alias, GAMES);
     }
 
     /**
-     * Create a <code>games</code> table reference
+     * Create a <code>GAMES</code> table reference
      */
     public Games() {
-        this(DSL.name("games"), null);
+        this(DSL.name("GAMES"), null);
     }
 
     @Override
@@ -118,12 +118,12 @@ public class Games extends TableImpl<GamesRecord> {
 
     @Override
     public UniqueKey<GamesRecord> getPrimaryKey() {
-        return Keys.GAMES__PK_GAMES;
+        return Keys.CONSTRAINT_4;
     }
 
     @Override
     public List<UniqueKey<GamesRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.GAMES__UK_GAMES_59091905);
+        return Arrays.asList(Keys.CONSTRAINT_40);
     }
 
     @Override

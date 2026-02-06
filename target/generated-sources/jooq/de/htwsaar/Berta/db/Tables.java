@@ -14,7 +14,7 @@ import de.htwsaar.Berta.db.tables.Games;
 public class Tables {
 
     /**
-     * The table <code>games</code>.
+     * The table <code>GAMES</code>.
      */
     public static final Games GAMES = Games.GAMES;
 }

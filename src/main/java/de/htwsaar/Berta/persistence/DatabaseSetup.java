@@ -12,7 +12,7 @@ public class DatabaseSetup {
   public static final String DB_URL = "jdbc:sqlite:database.db";
 
   private static final String CREATE_TABLE_SQL = """
-            CREATE TABLE IF NOT EXISTS games (
+            CREATE TABLE IF NOT EXISTS GAMES (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 steam_id INTEGER NOT NULL UNIQUE,
                 name TEXT NOT NULL,

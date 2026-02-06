@@ -19,70 +19,70 @@ public class GamesRecord extends UpdatableRecordImpl<GamesRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>games.id</code>.
+     * Setter for <code>GAMES.ID</code>.
      */
     public void setId(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>games.id</code>.
+     * Getter for <code>GAMES.ID</code>.
      */
     public Integer getId() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>games.steam_id</code>.
+     * Setter for <code>GAMES.STEAM_ID</code>.
      */
     public void setSteamId(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>games.steam_id</code>.
+     * Getter for <code>GAMES.STEAM_ID</code>.
      */
     public Integer getSteamId() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>games.name</code>.
+     * Setter for <code>GAMES.NAME</code>.
      */
     public void setName(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>games.name</code>.
+     * Getter for <code>GAMES.NAME</code>.
      */
     public String getName() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>games.price_cents</code>.
+     * Setter for <code>GAMES.PRICE_CENTS</code>.
      */
     public void setPriceCents(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>games.price_cents</code>.
+     * Getter for <code>GAMES.PRICE_CENTS</code>.
      */
     public Integer getPriceCents() {
         return (Integer) get(3);
     }
 
     /**
-     * Setter for <code>games.image_url</code>.
+     * Setter for <code>GAMES.IMAGE_URL</code>.
      */
     public void setImageUrl(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>games.image_url</code>.
+     * Getter for <code>GAMES.IMAGE_URL</code>.
      */
     public String getImageUrl() {
         return (String) get(4);
@@ -120,5 +120,21 @@ public class GamesRecord extends UpdatableRecordImpl<GamesRecord> {
         setPriceCents(priceCents);
         setImageUrl(imageUrl);
         resetChangedOnNotNull();
+    }
+
+    /**
+     * Create a detached, initialised GamesRecord
+     */
+    public GamesRecord(de.htwsaar.Berta.db.tables.pojos.Games value) {
+        super(Games.GAMES);
+
+        if (value != null) {
+            setId(value.getId());
+            setSteamId(value.getSteamId());
+            setName(value.getName());
+            setPriceCents(value.getPriceCents());
+            setImageUrl(value.getImageUrl());
+            resetChangedOnNotNull();
+        }
     }
 }
