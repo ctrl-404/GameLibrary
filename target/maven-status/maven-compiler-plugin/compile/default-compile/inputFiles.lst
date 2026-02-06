@@ -12,3 +12,9 @@
 /home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/servicelayer/GameService.java
 /home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/servicelayer/SteamIntegration.java
 /home/mischa/Programming/JavaProjects/GameLibrary/src/main/java/de/htwsaar/Berta/servicelayer/UserInterface.java
+/home/mischa/Programming/JavaProjects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/DefaultCatalog.java
+/home/mischa/Programming/JavaProjects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/DefaultSchema.java
+/home/mischa/Programming/JavaProjects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/Keys.java
+/home/mischa/Programming/JavaProjects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/Tables.java
+/home/mischa/Programming/JavaProjects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/tables/Games.java
+/home/mischa/Programming/JavaProjects/GameLibrary/target/generated-sources/jooq/de/htwsaar/Berta/db/tables/records/GamesRecord.java
