@@ -1,5 +1,7 @@
 package de.htwsaar.Berta;
 
+import de.htwsaar.Berta.servicelayer.Application;
+
 /**
  * Eine Bootstrap-Klasse, die sicherstellt, dass die Anwendung unter macOS
  * mit dem JVM-Parameter -XstartOnFirstThread gestartet wird.
@@ -35,7 +37,8 @@ public class MacBootstrap {
                 e.printStackTrace();
             }
         } else {
-            Main.main(args);
+            Application application = new Application();
+            application.run();
         }
     }
 }
