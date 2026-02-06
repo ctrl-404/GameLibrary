@@ -54,7 +54,6 @@
   <version>${jooq.version}</version>
 
   <dependencies>
-    <!-- DDLDatabase sitzt in jooq-meta-extensions -->
     <dependency>
       <groupId>org.jooq</groupId>
       <artifactId>jooq-meta-extensions</artifactId>
@@ -76,19 +75,16 @@
             <name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
 
             <properties>
-              <!-- Pfad zu euren DDL/Migrations-Skripten -->
               <property>
                 <key>scripts</key>
-                <value>*.sql</value>
+                <value>src/main/resources/db/migrations/schema.sql</value>
               </property>
 
-              <!-- hilft beim Parsen -->
               <property>
                 <key>dialect</key>
                 <value>SQLITE</value>
               </property>
 
-              <!-- optional: wenn ihr V1__, V2__ etc nutzt -->
               <property>
                 <key>sort</key>
                 <value>semantic</value>
@@ -101,7 +97,7 @@
             <directory>${project.build.directory}/generated-sources/jooq</directory>
           </target>
 
-          <!-- optional -->
+          <!-- Unsicher ob wir das brauchen, aber sicher ist sicher -->
           <generate>
             <daos>true</daos>
             <pojos>true</pojos>

@@ -1,4 +1,5 @@
-package de.htwsaar.Berta.persistence;
+
+    package de.htwsaar.Berta.persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
