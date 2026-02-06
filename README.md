@@ -59,5 +59,7 @@ Die Steuerung erfolgt vollständig über die Tastatur:
 
 ### Starten
 Führe die Hauptklasse aus:
+```bash
 mvn compile
 mvn exec:java
+```
