@@ -59,5 +59,5 @@ Die Steuerung erfolgt vollständig über die Tastatur:
 
 ### Starten
 Führe die Hauptklasse aus:
-```bash
-java -cp target/berta-app.jar de.htwsaar.Berta.MacBootstrap
+mvn compile
+mvn exec:java
